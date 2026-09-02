@@ -4,7 +4,7 @@
 
 [![License: MIT](https://img.shields.io/badge/Code%20License-MIT-blue.svg)](LICENSE)
 
-ImageNet-LSEJ (ImageNet Large-Scale Eroded Jigsaw) is a controlled benchmark for evaluating jigsaw-puzzle reassembly under increasing grid size and boundary-information loss. It contains 12,000 high-resolution images selected from the ILSVRC2012 training set and defines six paired tasks by combining two grid sizes (10x10 and 20x20) with three erosion widths (2, 5, and 8 pixels).
+ImageNet-LSEJ (ImageNet Large-Scale Eroded Jigsaw) is a controlled benchmark for evaluating jigsaw-puzzle reassembly under increasing grid size and boundary-information loss. It contains 12,000 high-resolution images selected from the [ImageNet ILSVRC2012](https://www.image-net.org/index.php) training set and defines six paired tasks by combining two grid sizes (10x10 and 20x20) with three erosion widths (2, 5, and 8 pixels).
 
 All tasks share the same source images, official train/validation/test split, 50x50 piece resolution, and fixed piece permutations. This paired design makes it possible to study the effects of puzzle scale and erosion strength without confounding them with different images or shuffles.
 
@@ -17,6 +17,28 @@ Eroded jigsaw reassembly removes visual evidence around the original seams, maki
 
 Consequently, strong performance on small grids does not reveal whether a method remains effective as the number of pieces and candidate relationships grows. ImageNet-LSEJ is designed to cover **both a large sample size and large puzzle grids**, enabling reproducible training and controlled scalability analysis.
 
+The following table summarizes representative resources that motivate this design. Classical benchmarks reach hundreds or thousands of pieces, but contain too few images to support modern representation learning. Learning-oriented benchmarks provide thousands of puzzles, but are concentrated at 3x3 and 5x5 grids.
+
+| Dataset / benchmark | Data scale | Puzzle size | Eroded boundaries | Learning-oriented split |
+|:--|:--|:--|:--:|:--:|
+| [MIT (Cho et al.)](https://icvl.cs.bgu.ac.il/pages/researches/Square-Jigsaw-Puzzle-Solving.html) | 20 images | 432 pieces | No | No |
+| [McGill](https://icvl.cs.bgu.ac.il/pages/researches/Square-Jigsaw-Puzzle-Solving.html) | 20 images | 540 pieces | No | No |
+| [BGU-805](https://icvl.cs.bgu.ac.il/pages/researches/Square-Jigsaw-Puzzle-Solving.html) | 20 images | 805 pieces | No | No |
+| [BGU-2360](https://icvl.cs.bgu.ac.il/pages/researches/Square-Jigsaw-Puzzle-Solving.html) | 3 images | 2,360 pieces | No | No |
+| [Bridger et al.](https://openaccess.thecvf.com/content_CVPR_2020/papers/Bridger_Solving_Jigsaw_Puzzles_With_Eroded_Boundaries_CVPR_2020_paper.pdf) | 3 sets x 20 images | 70 / 88 / 150 pieces | Yes | No large-scale puzzle split |
+| [Deepzzle](https://arxiv.org/abs/2005.12548) | 12,000 puzzles | 3x3 | Yes | Yes |
+| [JPwLEG](https://ojs.aaai.org/index.php/AAAI/article/download/25325/25097) | 12,000 puzzles | 3x3 / 5x5 | Yes | 9,000 / 1,000 / 2,000 |
+| [GAP](https://github.com/OfirShahar/puzzle-flow-matching) | 20,000 puzzles per subset | 3x3 / 5x5 | Yes, irregular | Yes |
+| **ImageNet-LSEJ (ours)** | **12,000 paired source images** | **10x10 / 20x20** | **Yes, 2 / 5 / 8 px** | **9,000 / 1,000 / 2,000** |
+
+Counts refer to source images for classical image benchmarks and to generated puzzles for learning-oriented datasets. The table is representative rather than exhaustive; protocols and boundary models differ across datasets.
+
+<p align="center">
+  <img src="assets/grid_scalability.png" alt="Performance degradation from 3x3 to 5x5 grids on JPwLEG and GAP" width="88%">
+</p>
+
+<p align="center"><em>Representative methods that perform well on 3x3 puzzles can degrade sharply at 5x5, motivating controlled evaluation at substantially larger grids.</em></p>
+
 ## Key Features
 
 - **12,000 source images** covering 967 ImageNet classes.
@@ -27,6 +49,16 @@ Consequently, strong performance on small grids does not reveal whether a method
 - **Fixed 9,000/1,000/2,000 train/validation/test split.**
 - **Official fixed permutations** shared across erosion levels of the same grid.
 - **On-the-fly task generation:** source images are stored once; resizing, splitting, erosion, and shuffling are performed by the official DataLoader.
+
+## Task Preview
+
+All six tasks are generated from the same source image with paired permutations. Increasing erosion removes more boundary evidence, while increasing the grid from 10x10 to 20x20 raises the number of pieces from 100 to 400. The shuffled panel below shows the actual solver input; the remaining panels are restored to ground-truth order only to visualize the degradation.
+
+<p align="center">
+  <img src="assets/task_examples.jpg" alt="ImageNet-LSEJ source image, shuffled input, and six paired benchmark tasks" width="100%">
+</p>
+
+<p align="center"><em>One source image under the six official ImageNet-LSEJ task configurations.</em></p>
 
 ## Download
 
@@ -66,7 +98,7 @@ For a fixed grid size, all three erosion settings use the same piece permutation
 
 ## Source-Image Selection
 
-ImageNet-LSEJ is derived from the ILSVRC2012 training set:
+ImageNet-LSEJ is derived from the [ImageNet ILSVRC2012](https://www.image-net.org/index.php) training set:
 
 1. Select images whose shorter side is at least 1,000 pixels, producing 13,091 candidates from 969 classes.
 2. Center-crop each candidate to 1000x1000 without resizing.
@@ -207,7 +239,7 @@ The fixed split and permutations should be preserved when comparing methods. Mod
 
 ImageNet-LSEJ models boundary-information loss in regular square-grid puzzles. It is not intended as a replacement for datasets of irregular physical or archaeological fragments.
 
-The benchmark is derived from ILSVRC2012. Users are responsible for complying with the [ImageNet terms of access](https://www.image-net.org/download.php) and the rights associated with the underlying images. The final distribution format and access procedure will be documented with the download release.
+The benchmark is derived from ILSVRC2012. See the [ImageNet website](https://www.image-net.org/index.php) for the original dataset and the [ImageNet terms of access](https://www.image-net.org/download.php). Users are responsible for complying with those terms and the rights associated with the underlying images. The final distribution format and access procedure will be documented with the download release.
 
 ## Related Project
 
