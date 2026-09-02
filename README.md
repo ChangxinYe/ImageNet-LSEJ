@@ -62,9 +62,9 @@ All six tasks are generated from the same source image with paired permutations.
 
 ## Download
 
-> **Dataset download: Coming soon.**
+> **Dataset download:** [changxinye/ImageNet-LSEJ on Hugging Face](https://huggingface.co/datasets/changxinye/ImageNet-LSEJ)
 
-The final download location, package checksums, and release instructions will be added here after hosting is finalized.
+Dataset files are currently being uploaded. Package checksums and complete release instructions will be added after the upload is finalized.
 
 ## Dataset Statistics
 
