@@ -1,0 +1,13 @@
+{
+  "dataset": "ImageNet-LSEJ",
+  "version": "1.0",
+  "default_task": "grid10_erode2",
+  "tasks": {
+    "grid10_erode2": "grid10_erode2.json",
+    "grid10_erode5": "grid10_erode5.json",
+    "grid10_erode8": "grid10_erode8.json",
+    "grid20_erode2": "grid20_erode2.json",
+    "grid20_erode5": "grid20_erode5.json",
+    "grid20_erode8": "grid20_erode8.json"
+  }
+}

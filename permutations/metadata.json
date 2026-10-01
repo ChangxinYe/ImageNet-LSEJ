@@ -1,0 +1,48 @@
+{
+  "generated_at": "2026-07-11 14:43:47",
+  "dataset": "ImageNet-LSEJ",
+  "version": "1.0",
+  "image_count": 12000,
+  "base_seed": 42,
+  "piece_indexing": "row-major, zero-based",
+  "permutation_definition": "shuffled_pieces = original_pieces[permutation]",
+  "target_definition": "permutation[i] is the original piece index at shuffled position i",
+  "shared_across_erosion_pixels": [
+    2,
+    5,
+    8
+  ],
+  "files": {
+    "grid10": {
+      "path": "grid10_permutations.npz",
+      "piece_count": 100,
+      "arrays": [
+        "lsej_ids",
+        "splits",
+        "permutations"
+      ],
+      "permutation_shape": [
+        12000,
+        100
+      ],
+      "permutation_dtype": "uint8",
+      "derived_seed": 2748368344520962056
+    },
+    "grid20": {
+      "path": "grid20_permutations.npz",
+      "piece_count": 400,
+      "arrays": [
+        "lsej_ids",
+        "splits",
+        "permutations"
+      ],
+      "permutation_shape": [
+        12000,
+        400
+      ],
+      "permutation_dtype": "uint16",
+      "derived_seed": 18178095347115747477
+    }
+  },
+  "usage_note": "Users should load the published permutation arrays instead of regenerating them from the seed."
+}

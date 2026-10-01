@@ -1,0 +1,23 @@
+{
+  "generated_at": "2026-07-11 13:58:48",
+  "random_seed": 42,
+  "method": "exact-size stratified random split with global remainder correction",
+  "total_images": 12000,
+  "split_counts": {
+    "train": 9000,
+    "val": 1000,
+    "test": 2000
+  },
+  "class_counts": {
+    "train": 967,
+    "val": 686,
+    "test": 869
+  },
+  "csv_fields": [
+    "lsej_id",
+    "path",
+    "split",
+    "imagenet_image_id",
+    "imagenet_class_id"
+  ]
+}

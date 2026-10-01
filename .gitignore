@@ -1,0 +1,17 @@
+# Large source images and release archives are distributed separately.
+/images/
+*.zip
+/image/
+/ILSVRC2012_img_train_unzip/
+/select_image/
+/selection/s2_imagenet_size_stats/
+
+# Python and notebook working files.
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Local environments and editor files.
+.venv/
+.idea/
+.vscode/

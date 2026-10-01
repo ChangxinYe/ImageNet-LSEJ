@@ -1,0 +1,50 @@
+{
+  "dataset": "ImageNet-LSEJ",
+  "version": "1.0",
+  "task_id": "grid20_erode5",
+  "source": {
+    "image_size": [
+      1000,
+      1000
+    ],
+    "color_mode": "RGB"
+  },
+  "puzzle": {
+    "grid_rows": 20,
+    "grid_cols": 20,
+    "piece_count": 400,
+    "piece_size": [
+      50,
+      50
+    ],
+    "piece_indexing": "row-major, zero-based"
+  },
+  "image_preprocessing": {
+    "working_image_size": [
+      1000,
+      1000
+    ],
+    "resize_required": false,
+    "resize_method": null
+  },
+  "erosion": {
+    "method": "border_crop_and_resize",
+    "pixels_per_side": 5,
+    "cropped_piece_size": [
+      40,
+      40
+    ],
+    "output_piece_size": [
+      50,
+      50
+    ],
+    "resize_method": "lanczos"
+  },
+  "permutation": {
+    "file": "../permutations/grid20_permutations.npz",
+    "array": "permutations",
+    "id_array": "lsej_ids",
+    "definition": "shuffled_pieces = original_pieces[permutation]",
+    "shared_across_erosion_levels": true
+  }
+}

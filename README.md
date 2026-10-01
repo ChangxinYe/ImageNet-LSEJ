@@ -62,9 +62,21 @@ All six tasks are generated from the same source image with paired permutations.
 
 ## Download
 
-> **Dataset download:** [changxinye/ImageNet-LSEJ on Hugging Face](https://huggingface.co/datasets/changxinye/ImageNet-LSEJ)
+The full dataset is available as [ImageNet_LSEJ.zip on Hugging Face](https://huggingface.co/datasets/changxinye/ImageNet-LSEJ/blob/main/ImageNet_LSEJ.zip). The archive is 16,022,485,419 bytes (about 14.9 GiB) and contains the 12,000 source PNGs, official metadata, DataLoader, and examples. This GitHub repository also provides the code and metadata without the 12,000 source PNGs.
 
-Dataset files are currently being uploaded. Package checksums and complete release instructions will be added after the upload is finalized.
+Before obtaining or using the images, review the [ImageNet terms of access](https://www.image-net.org/download.php) and the [scope and data terms below](#scope-and-data-terms).
+
+```bash
+curl -L -C - --retry 5 -o ImageNet_LSEJ.zip "https://huggingface.co/datasets/changxinye/ImageNet-LSEJ/resolve/main/ImageNet_LSEJ.zip?download=true"
+```
+
+On Windows PowerShell, use `curl.exe` in place of `curl`. The `-C -` option resumes an interrupted transfer. Check the completed file before extracting it:
+
+```text
+SHA-256  b07181a6fd5cc6a0f2faf72562844364ec854cbe3bf5653334365e4d14c0422c  ImageNet_LSEJ.zip
+```
+
+Run `sha256sum ImageNet_LSEJ.zip` on Linux/macOS, or `Get-FileHash -Algorithm SHA256 .\ImageNet_LSEJ.zip` in PowerShell, and compare the result with [SHA256SUMS](SHA256SUMS). The published hash was checked against the local release archive and Hugging Face's linked file hash. Then extract with `python -m zipfile -e ImageNet_LSEJ.zip .` (Python 3.10 or newer). This creates `ImageNet_LSEJ/` in the current directory.
 
 ## Dataset Statistics
 
@@ -108,6 +120,8 @@ ImageNet-LSEJ is derived from the [ImageNet ILSVRC2012](https://www.image-net.or
 
 This selection deliberately favors images with sufficient local structure for studying piece compatibility. ImageNet-LSEJ is therefore a controlled jigsaw benchmark rather than an unbiased sample of the full ImageNet distribution.
 
+The [source-selection scripts](selection) document the resolution filter, center crop, and puzzle-suitability score. The ranking uses 30% low-information-piece score, 20% connected-component score, 20% piece-uniqueness score, 15% gradient score, and 15% piece-detail score. The published split CSVs fix the exact selected image IDs and split assignments; users do not need to rerun selection to use the benchmark.
+
 ## Puzzle Generation
 
 Each sample is generated dynamically by the official DataLoader:
@@ -140,9 +154,9 @@ Here, erosion means **border cropping followed by size restoration**, rather tha
 8-pixel erosion: 50x50 -> 34x34 -> 50x50
 ```
 
-## Planned Package Layout
+## Package Layout
 
-The released dataset package will follow this structure:
+The downloaded archive contains these main files:
 
 ```text
 ImageNet_LSEJ/
@@ -168,10 +182,14 @@ ImageNet_LSEJ/
 |-- examples/
 |   |-- dataloader_example.py
 |   `-- preview_lsej.ipynb
-`-- lsej_dataloader.py
+|-- lsej_dataloader.py
+|-- s1_create_dataset_splits.py
+`-- s2_prepare_official_tasks.py
 ```
 
 Source images are stored only once. The six tasks are generated on demand rather than materialized as six separate copies.
+
+This GitHub repository contains the loader, construction and selection scripts, configs, splits, and permutations. It does not contain the source images; the visualization notebook is supplied in the full archive.
 
 ## Label Convention
 
@@ -192,7 +210,19 @@ Users should load the published permutation arrays instead of regenerating them 
 
 ## Quick Start
 
-After downloading the released package, create an official task as follows:
+Install the DataLoader dependencies in your Python environment:
+
+```bash
+python -m pip install numpy Pillow torch
+```
+
+After downloading and extracting the archive, run the included example from the directory containing `ImageNet_LSEJ/`:
+
+```bash
+python ImageNet_LSEJ/examples/dataloader_example.py --root ImageNet_LSEJ --split test --task grid10_erode2
+```
+
+To create an official task directly in Python, run from `ImageNet_LSEJ/` or add that directory to `PYTHONPATH`:
 
 ```python
 from lsej_dataloader import ImageNetLSEJDataset
@@ -210,7 +240,7 @@ print(sample["permutation"].shape)  # [100]
 
 For 20x20 tasks, `sample["pieces"]` has shape `[400, 3, 50, 50]`. By default, pieces are returned as `float32` tensors in `[0, 1]`; set `normalize=False` to receive `uint8` tensors.
 
-The complete runnable example and visualization notebook will be provided in:
+The complete runnable example and visualization notebook are included in:
 
 ```text
 ImageNet_LSEJ/examples/dataloader_example.py

@@ -1,0 +1,24 @@
+{
+  "generated_at": "2026-07-11 13:05:14",
+  "image_size": 1000,
+  "grid_size": 20,
+  "piece_size": 50,
+  "top_k": 12000,
+  "image_count": 13091,
+  "selection_counts": {
+    "accepted": 12000,
+    "rejected": 1091,
+    "failed": 0
+  },
+  "selection_ratios": {
+    "accepted": 0.91666,
+    "rejected": 0.08334,
+    "failed": 0.0
+  },
+  "thresholds": {
+    "low_std": 10.0,
+    "low_gradient": 3.0
+  },
+  "score_formula": "30% low-information + 20% component + 20% uniqueness + 15% gradient + 15% piece detail",
+  "copied_images": true
+}
